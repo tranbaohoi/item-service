@@ -1,6 +1,12 @@
-# Sử dụng image Java làm base image
-FROM openjdk:17-jdk-slim                                                                                                                                                                                                                        # Cài đặt thư mục làm việc trong container
-WORKDIR /app                                                                                                            
-# Copy file jar từ local vào container                                                                                  COPY target/item-service-0.0.1-SNAPSHOT.jar /app/myapp.jar                                                                                                                                                                                      # Mở cổng cho ứng dụng (nếu cần)
-EXPOSE 8081                                                                                                                                                                                                                                     # Chạy ứng dụng khi container khởi động
-ENTRYPOINT ["java", "-jar", "myapp.jar"]                                                                                                                              
+FROM maven:3.9.9-sapmachine-17 AS build
+WORKDIR /app
+COPY . .
+RUN mvn install -DskipTests=true
+
+# Runtime Stage (Java 17)
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /run
+COPY --from=build /app/target/product-service-0.0.1-SNAPSHOT.jar product-service.jar
+
+EXPOSE 8082
+ENTRYPOINT ["java", "-jar", "product-service.jar"]
