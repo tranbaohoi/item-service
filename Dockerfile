@@ -6,7 +6,7 @@ RUN mvn install -DskipTests=true
 # Runtime Stage (Java 17)
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /run
-COPY --from=build /app/target/product-service-0.0.1-SNAPSHOT.jar product-service.jar
+COPY --from=build /app/target/item-service-0.0.1-SNAPSHOT.jar item-service.jar
 
-EXPOSE 8082
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "product-service.jar"]
