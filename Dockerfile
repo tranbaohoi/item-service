@@ -9,4 +9,4 @@ WORKDIR /run
 COPY --from=build /app/target/item-service-0.0.1-SNAPSHOT.jar item-service.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "product-service.jar"]
+ENTRYPOINT ["java", "-jar", "item-service.jar"]
